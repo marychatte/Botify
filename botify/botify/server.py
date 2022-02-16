@@ -11,7 +11,6 @@ from flask_restful import Resource, Api, abort, reqparse
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
 from botify.recommenders.random import Random
-from botify.recommenders.sticky_artist import StickyArtist
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -27,7 +26,7 @@ artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 
 data_logger = DataLogger(app)
 
-catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
+catalog = Catalog(app).load(app.config["TRACKS_CATALOG"], app.config["TOP_TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
 
@@ -59,11 +58,14 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.STICKY_ARTIST.assign(user)
+        # TODO 4: Wire TOP_POP experiment
+        treatment = Experiments.AA.assign(user)
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+            pass
         else:
-            recommender = Random(tracks_redis.connection)
+            pass
+
+        recommender = Random(tracks_redis.connection)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
