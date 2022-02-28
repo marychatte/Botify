@@ -54,7 +54,7 @@ class Experiments:
     """
 
     AA = Experiment("AA", Split.HALF_HALF)
-    # TODO 3: Create 4-way TOP_POP A/B experiment
+    TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.AA]
+        self.experiments = [Experiments.AA, Experiments.TOP_POP]

@@ -11,6 +11,7 @@ from flask_restful import Resource, Api, abort, reqparse
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
 from botify.recommenders.random import Random
+from botify.recommenders.toppop import TopPop
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -58,14 +59,15 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        # TODO 4: Wire TOP_POP experiment
-        treatment = Experiments.AA.assign(user)
+        treatment = Experiments.TOP_POP.assign(user)
         if treatment == Treatment.T1:
-            pass
+            recommender = TopPop(tracks_redis.connection, catalog.top_tracks[:10])
+        elif treatment == Treatment.T2:
+            recommender = TopPop(tracks_redis.connection, catalog.top_tracks[:100])
+        elif treatment == Treatment.T3:
+            recommender = TopPop(tracks_redis.connection, catalog.top_tracks[:1000])
         else:
-            pass
-
-        recommender = Random(tracks_redis.connection)
+            recommender = Random(tracks_redis.connection)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
