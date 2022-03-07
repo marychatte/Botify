@@ -454,12 +454,12 @@ r(TW) = \, ? \quad r(SW1) = \, ?
 \end{tcolorbox}
 
 \begin{center}
-\includegraphics[scale=0.5]{images/utility.png}
+\includegraphics[scale=0.5]{images/utility-2.png}
 \end{center}
 
 \end{frame}
 
-\begin{frame}{Бейзлайн}
+\begin{frame}{Бейзлайн \cite{KOREN}}
 
 \begin{columns}
 \begin{column}{0.2\textwidth} 
@@ -524,6 +524,12 @@ b_{ui} = \mu + b_u + b_i
 
 \end{frame}
 
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.3]{images/latent.png}
+\end{center}
+\end{frame}
+
 \begin{frame}{Как оптимизировать}
 \[
 \sum_{u, i} (r_{ui} - \mu - b_u - b_i - q_i^T p_u)^2 + \lambda (b_u^2 +  b_i^2 + \| q_i \|^2 + \| p_u \|^2)
@@ -579,6 +585,18 @@ b_{ui} = \mu + b_u + b_i
 \begin{itemize}
 \item $t_{ui}$ -- время, когда пользователь оценил айтем
 \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Netflix Prize }
+
+\begin{center}
+\includegraphics[scale=0.25]{images/svd-compare.png}
+\end{center}
+
+\begin{small}
+September 21, 2009, the grand prize of US\$1,000,000 was given to the BellKor's Pragmatic Chaos team which bested Netflix's own algorithm for predicting ratings by 10.06
+\end{small}
 
 \end{frame}
 
@@ -648,19 +666,41 @@ q_i = \sum_{j \in f_i} v_j, \quad p_u = \sum_{j \in f_u} w_j
 
 \end{frame}
 
+\begin{frame}{Реализации}
+
+\begin{center}
+\begin{tabular}{l c c c}
+ & Spark & LightFM & Implicit \\
+\hline
+\hline
+SGD & & \checked & \\
+ALS & \checked & & \checked \\
+\hline
+RMSE & \checked &  & \checked \\
+logistic & & \checked & \checked \\
+BPR & & \checked & \checked \\
+WARP & & \checked & \\
+\hline
+GPU & & & \checked \\
+\end{tabular}
+\end{center}
+
+\end{frame}
+
 \begin{frame}{}
-% Графовый рекомендер групп
 
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=Плюсы]
   \begin{itemize}
-    \item Качество рекомендаций
+    \item Качество рекомендаций: новизна как у neighbourhood-based CF, но можно заполнить все пробелы в user-item матрице
+    \item Большой выбор моделей и лоссов
+    \item Можно переформулировать как нейронную сеть
   \end{itemize}
 \end{tcolorbox}
 
 \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=Минусы]
   \begin{itemize}
     \item Сложные алгоримы оптимизации
-    \item Проблемы с холодным стартом
+    \item Холодный старт как пользователей, так и айтемов нужно отдельно решать
   \end{itemize}
 \end{tcolorbox}
 
@@ -687,14 +727,32 @@ q_i = \sum_{j \in f_i} v_j, \quad p_u = \sum_{j \in f_u} w_j
 \begin{frame}
 
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-Существуют ситуации, в которых могут пригодиться как CB, так и CF подходы
+Реальные рекомендеры почти всегда hybrid: применяются как CF, так и CB подходы
 \end{tcolorbox}
-
-\vfill
 
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-Некоторые из них даже реализованы на спарке
+``Дефолтным'' алгоритмом рекомендаций считается матричная факторизация
 \end{tcolorbox}
+
+\end{frame}
+
+\begin{frame}{В следующий раз}
+
+\begin{columns}
+
+\begin{column}{0.47\textwidth} 
+\begin{center}
+\includegraphics[scale=0.3]{images/relationships.png}
+\end{center}
+\end{column}
+
+\begin{column}{0.47\textwidth}
+\begin{center}
+\includegraphics[scale=0.15]{images/conspiracy.jpeg}
+\end{center}
+\end{column}
+
+\end{columns}
 
 \end{frame}
 
