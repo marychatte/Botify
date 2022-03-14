@@ -10,6 +10,7 @@ from flask_restful import Resource, Api, abort, reqparse
 
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
+from botify.recommenders.Indexed import Indexed
 from botify.recommenders.random import Random
 from botify.track import Catalog
 
@@ -59,14 +60,11 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        # TODO 3: Create and wire PERSONALIZED experiment
-        treatment = Experiments.AA.assign(user)
+        treatment = Experiments.INDEXED.assign(user)
         if treatment == Treatment.T1:
-            pass
+            recommender = Indexed(tracks_redis.connection, recommendations_redis.connection, catalog)
         else:
-            pass
-
-        recommender = Random(tracks_redis.connection)
+            recommender = Random(tracks_redis.connection)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
