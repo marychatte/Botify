@@ -22,14 +22,14 @@ api = Api(app)
 
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
+recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
 
 data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"], app.config["TOP_TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
-# TODO 1: Create Redis DB and implement uploading recommendations
-# catalog.upload_recommendations(recommendations_redis.connection)
+catalog.upload_recommendations(recommendations_redis.connection)
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
