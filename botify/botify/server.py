@@ -10,7 +10,7 @@ from flask_restful import Resource, Api, abort, reqparse
 
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
-from botify.recommenders.Indexed import Indexed
+from botify.recommenders.indexed import Indexed
 from botify.recommenders.random import Random
 from botify.track import Catalog
 
@@ -27,7 +27,9 @@ recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
 
 data_logger = DataLogger(app)
 
-catalog = Catalog(app).load(app.config["TRACKS_CATALOG"], app.config["TOP_TRACKS_CATALOG"])
+catalog = Catalog(app).load(
+    app.config["TRACKS_CATALOG"], app.config["TOP_TRACKS_CATALOG"]
+)
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
 catalog.upload_recommendations(recommendations_redis.connection)
@@ -60,9 +62,12 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
+        # TODO 2: Create and wire RECOMMENDERS experiment
         treatment = Experiments.INDEXED.assign(user)
         if treatment == Treatment.T1:
-            recommender = Indexed(tracks_redis.connection, recommendations_redis.connection, catalog)
+            recommender = Indexed(
+                tracks_redis.connection, recommendations_redis.connection, catalog
+            )
         else:
             recommender = Random(tracks_redis.connection)
 
