@@ -22,12 +22,16 @@
 \author{Николай Анохин}
 \title{Нейросетевые рекомендеры}
 
-%\setbeamercovered{transparent} 
-%\setbeamertemplate{navigation symbols}{} 
-%\logo{} 
-%\institute{} 
-%\date{} 
-%\subject{} 
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
 
 \begin{document}
 
@@ -43,18 +47,6 @@
 %\end{frame}
 
 }
-
-\begin{frame}{Программа модуля}
-\begin{tabular}{ l | l | c | c }
-{\bf Дата} & {\bf Тема} & {\bf Семинар} & {\bf Домашка} \\
-\hline
-2021-09-30 & Рекомендательные сервисы в продакшене & \checked &  \\
-2021-10-07 & Метрики и базовые подходы & \checked &  \\ 
-2021-09-14 & Классические алгоритмы рекомендаций & \checked & \checked  \\
-{\color{info} 2021-09-21} & {\color{info} Нейросетевые рекомендеры} & {\color{info} \checked} &  \\
-2021-09-28 & Нерешенные проблемы и новые направления & \checked & 
-\end{tabular}
-\end{frame}
 
 \begin{frame}{Контекст}
 
@@ -102,41 +94,18 @@
 
 \begin{frame}
 
+\begin{columns}
+\begin{column}{0.47\textwidth} 
 \begin{center}
-\includegraphics[scale=0.3]{images/svdpp.png}
+\includegraphics[scale=0.25]{images/svdpp.png}
 \end{center}
-
-\end{frame}
-
-\begin{frame}
-
+\end{column}
+\begin{column}{0.47\textwidth} \pause
 \begin{center}
-\includegraphics[scale=0.3]{images/svdpp-bias.png}
+\includegraphics[scale=0.25]{images/nn.png}
 \end{center}
-
-\end{frame}
-
-\begin{frame}
-
-\begin{center}
-\includegraphics[scale=0.3]{images/svdpp-res.png}
-\end{center}
-
-\end{frame}
-
-\begin{frame}
-
-\begin{center}
-\includegraphics[scale=0.3]{images/svdpp-features.png}
-\end{center}
-
-\end{frame}
-
-\begin{frame}
-
-\begin{center}
-\includegraphics[scale=0.3]{images/svdpp-export.png}
-\end{center}
+\end{column}
+\end{columns}
 
 \end{frame}
 
@@ -242,15 +211,6 @@ ML = модель + критерий оптимизации + алгоритм �
 
 \end{frame}
 
-\begin{frame}{Библиотеки приближенного поиска соседей}
-\url{https://github.com/erikbern/ann-benchmarks}
-
-\begin{center}
-\includegraphics[scale=0.3]{images/ann.png}
-\end{center}
-
-\end{frame}
-
 \section{Истории успеха: ранжирование}
 
 \begin{frame}{Истории успеха: ранжирование}
@@ -346,7 +306,7 @@ ML = модель + критерий оптимизации + алгоритм �
 
 \begin{tabular}{l l}
 Интересность & $\star\star\star\star\star$ \\
-Полезность & $\star\star$
+Полезность & $\star\star\star\star$
 \end{tabular}
 
 \end{frame}
@@ -389,7 +349,7 @@ ML = модель + критерий оптимизации + алгоритм �
 
 \end{frame}
 
-\section{Итоги}
+\section{Проблемы нейрорекомендеров}
 
 \begin{frame}{Проблема воспроизводимости \cite{PROGRESS}}
 
@@ -416,6 +376,21 @@ The CMN method was presented at SIGIR 18 and combines memory networks and neural
 
 \end{frame}
 
+\begin{frame}{Простые бейзлайны}
+
+SLIM \cite{SLIM} / EASE \cite{EASE}
+\[
+\hat A = A W,
+\]
+где 
+\begin{itemize}
+\item $A$ -- матрица интеракций
+\item $\hat A$ -- предсказанные интеракции
+\item $W_{:,j}$ -- колонка весов агрегации для  $j$ айтема ($W_{ij} \geq 0$ (SLIM), $W_{jj} = 0$).
+\end{itemize}
+
+\end{frame}
+
 \begin{frame}{Проблема сравнений \cite{DALMANN}}
 
 \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
@@ -427,6 +402,8 @@ The CMN method was presented at SIGIR 18 and combines memory networks and neural
 \end{center}
 
 \end{frame}
+
+\section{Итоги}
 
 \begin{frame}{Итоги}
 
