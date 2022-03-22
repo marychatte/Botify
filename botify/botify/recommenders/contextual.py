@@ -1,3 +1,5 @@
+import random
+
 from .random import Random
 from .recommender import Recommender
 
@@ -14,6 +16,16 @@ class Contextual(Recommender):
         self.fallback = Random(tracks_redis)
         self.catalog = catalog
 
-    # TODO 1: Implement contextual recommender based on NN predictions
     def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
-        return self.fallback.recommend_next(user, prev_track, prev_track_time)
+        previous_track = self.tracks_redis.get(prev_track)
+        if previous_track is None:
+            return self.fallback.recommend_next(user, prev_track, prev_track_time)
+
+        previous_track = self.catalog.from_bytes(previous_track)
+        recommendations = previous_track.recommendations
+        if recommendations is None:
+            return self.fallback.recommend_next(user, prev_track, prev_track_time)
+
+        shuffled = list(recommendations)
+        random.shuffle(shuffled)
+        return shuffled[0]

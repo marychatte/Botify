@@ -10,8 +10,10 @@ from flask_restful import Resource, Api, abort, reqparse
 
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
+from botify.recommenders.contextual import Contextual
 from botify.recommenders.indexed import Indexed
 from botify.recommenders.random import Random
+from botify.recommenders.sticky_artist import StickyArtist
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -62,11 +64,16 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        # TODO 2: Create and wire RECOMMENDERS experiment
-        treatment = Experiments.INDEXED.assign(user)
+        treatment = Experiments.RECOMMENDERS.assign(user)
         if treatment == Treatment.T1:
             recommender = Indexed(
                 tracks_redis.connection, recommendations_redis.connection, catalog
+            )
+        elif treatment == Treatment.T2:
+            recommender = Contextual(tracks_redis.connection, catalog)
+        elif treatment == Treatment.T3:
+            recommender = StickyArtist(
+                tracks_redis.connection, artists_redis.connection, catalog
             )
         else:
             recommender = Random(tracks_redis.connection)
