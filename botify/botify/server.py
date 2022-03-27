@@ -14,7 +14,6 @@ from botify.recommenders.contextual import Contextual
 from botify.recommenders.indexed import Indexed
 from botify.recommenders.random import Random
 from botify.recommenders.sticky_artist import StickyArtist
-from botify.recommenders.special import Special
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -66,12 +65,12 @@ class NextTrack(Resource):
         args = parser.parse_args()
 
         treatment = Experiments.RECOMMENDERS.assign(user)
-        if treatment == Treatment.My:
-            recommender = Special(tracks_redis.connection, artists_redis.connection, catalog, catalog.top_tracks[:10])
-        elif treatment == Treatment.T2:
-            recommender = Contextual(
-                tracks_redis.connection, catalog
+        if treatment == Treatment.T1:
+            recommender = Indexed(
+                tracks_redis.connection, recommendations_redis.connection, catalog
             )
+        elif treatment == Treatment.T2:
+            recommender = Contextual(tracks_redis.connection, catalog)
         elif treatment == Treatment.T3:
             recommender = StickyArtist(
                 tracks_redis.connection, artists_redis.connection, catalog
