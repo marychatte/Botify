@@ -5,7 +5,7 @@ import mmh3
 
 class Treatment(Enum):
     C = 0
-    My = 1
+    T1 = 1
     T2 = 2
     T3 = 3
     T4 = 4
@@ -53,7 +53,7 @@ class Experiments:
     A static container for all the existing experiments.
     """
 
-    AA  = Experiment("AA", Split.HALF_HALF)
+    AA = Experiment("AA", Split.HALF_HALF)
     RECOMMENDERS = Experiment("RECOMMENDERS", Split.FOUR_WAY)
 
     def __init__(self):
