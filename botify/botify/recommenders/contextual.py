@@ -23,7 +23,7 @@ class Contextual(Recommender):
 
         previous_track = self.catalog.from_bytes(previous_track)
         recommendations = previous_track.recommendations
-        if recommendations is None:
+        if recommendations is None or not recommendations:
             return self.fallback.recommend_next(user, prev_track, prev_track_time)
 
         shuffled = list(recommendations)
