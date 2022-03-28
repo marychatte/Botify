@@ -54,7 +54,7 @@ class Experiments:
     """
 
     AA = Experiment("AA", Split.HALF_HALF)
-    RECOMMENDERS = Experiment("RECOMMENDERS", Split.FOUR_WAY)
+    DIVERSITY = Experiment("RECOMMENDERS", Split.HALF_HALF)
 
     def __init__(self):
-        self.experiments = [Experiments.AA, Experiments.RECOMMENDERS]
+        self.experiments = [Experiments.AA, Experiments.DIVERSITY]

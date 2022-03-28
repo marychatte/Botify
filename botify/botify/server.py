@@ -64,17 +64,9 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.RECOMMENDERS.assign(user)
+        treatment = Experiments.DIVERSITY.assign(user)
         if treatment == Treatment.T1:
-            recommender = Indexed(
-                tracks_redis.connection, recommendations_redis.connection, catalog
-            )
-        elif treatment == Treatment.T2:
             recommender = Contextual(tracks_redis.connection, catalog)
-        elif treatment == Treatment.T3:
-            recommender = StickyArtist(
-                tracks_redis.connection, artists_redis.connection, catalog
-            )
         else:
             recommender = Random(tracks_redis.connection)
 
