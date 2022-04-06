@@ -87,4 +87,4 @@
 
 Рекомендер - `botify/botify/recommenders/similar_users.py` (название осталось от первоначально идеи)
 
-[image]()
+[image](https://github.com/marychatte/recsys-itmo-spring-2022/blob/master/botify/log_photo.png)
