@@ -2,15 +2,41 @@
   "REDIS_TRACKS_HOST": "redis",
   "REDIS_TRACKS_PORT": 6379,
   "REDIS_TRACKS_DB": 0,
+
   "REDIS_ARTIST_HOST": "redis",
   "REDIS_ARTIST_PORT": 6379,
   "REDIS_ARTIST_DB": 1,
+
   "REDIS_RECOMMENDATIONS_HOST": "redis",
   "REDIS_RECOMMENDATIONS_PORT": 6379,
   "REDIS_RECOMMENDATIONS_DB": 2,
-  "TRACKS_CATALOG": "./data/recommendations_20_5.json",
+
+  "REDIS_FIRSTS_HOST": "redis",
+  "REDIS_FIRSTS_PORT": 6379,
+  "REDIS_FIRSTS_DB": 3,
+
+  "REDIS_FAVORITES_HOST": "redis",
+  "REDIS_FAVORITES_PORT": 6379,
+  "REDIS_FAVORITES_DB": 4,
+
+  "REDIS_UNFAVORITES_HOST": "redis",
+  "REDIS_UNFAVORITES_PORT": 6379,
+  "REDIS_UNFAVORITES_DB": 5,
+
+  "REDIS_SIMILAR_USERS_HOST": "redis",
+  "REDIS_SIMILAR_USERS_PORT": 6379,
+  "REDIS_SIMILAR_USERS_DB": 6,
+
+  "REDIS_BAD_RECS_HOST": "redis",
+  "REDIS_BAD_RECS_PORT": 6379,
+  "REDIS_BAD_RECS_DB": 7,
+
+  "TRACKS_CATALOG": "./data/tracks_recs.json",
+  "USERS_CATALOG": "./data/similar_users_5.json",
   "TOP_TRACKS_CATALOG": "./data/top_tracks.json",
-  "RECOMMENDATIONS_FILE_PATH": "./data/recommendations.json",
+  "RECOMMENDATIONS_USERS_CATALOG": "./data/recommendations_users.json",
+  "USERS_FIRSTS_FAVORITES_CATALOG": "./data/users_firsts_favorites_unfavorites.json",
+
   "DATA_LOG_FILE": "./log/data.json",
   "DATA_LOG_FILE_MAX_BYTES": 104857600,
   "DATA_LOG_FILE_BACKUP_COPIES": 10

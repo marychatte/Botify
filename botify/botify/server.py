@@ -13,7 +13,9 @@ from botify.experiment import Experiments, Treatment
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.indexed import Indexed
 from botify.recommenders.random import Random
+from botify.recommenders.similar_users import SimilarUsers
 from botify.recommenders.sticky_artist import StickyArtist
+from botify.recommenders.toppop import TopPop
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -26,6 +28,11 @@ api = Api(app)
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
+firsts_redis = Redis(app, config_prefix="REDIS_FIRSTS")
+favorites_redis = Redis(app, config_prefix="REDIS_FAVORITES")
+unfavorites_redis = Redis(app, config_prefix="REDIS_UNFAVORITES")
+similar_users_redis = Redis(app, config_prefix="REDIS_SIMILAR_USERS")
+count_of_bads_recommendations = Redis(app, config_prefix="REDIS_BAD_RECS")
 
 data_logger = DataLogger(app)
 
@@ -35,6 +42,10 @@ catalog = Catalog(app).load(
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
 catalog.upload_recommendations(recommendations_redis.connection)
+catalog.upload_firsts_favorites_unfavorites(firsts_redis.connection,
+                                            favorites_redis.connection,
+                                            unfavorites_redis.connection)
+catalog.upload_similar_users(similar_users_redis.connection)
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
@@ -64,11 +75,26 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.DIVERSITY.assign(user)
+        treatment = Experiments.SIMILAR_USERS.assign(user)
         if treatment == Treatment.T1:
-            recommender = Contextual(tracks_redis.connection, catalog)
+            recommender = SimilarUsers(tracks_redis.connection,
+                                       catalog.top_tracks,
+                                       artists_redis.connection,
+                                       recommendations_redis.connection,
+                                       unfavorites_redis.connection,
+                                       count_of_bads_recommendations.connection,
+                                       catalog)
         else:
-            recommender = Random(tracks_redis.connection)
+            # elif treatment == Treatment.T2:
+            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+
+            # recommender = Contextual(tracks_redis.connection, catalog)
+        # elif treatment == Treatment.T3:
+        #     recommender = Indexed(tracks_redis.connection, recommendations_redis.connection, catalog)
+        # elif treatment == Treatment.T4:
+        #     recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+        # else:
+        #     recommender = Random(tracks_redis.connection)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
@@ -107,7 +133,6 @@ api.add_resource(Hello, "/")
 api.add_resource(Track, "/track/<int:track>")
 api.add_resource(NextTrack, "/next/<int:user>")
 api.add_resource(LastTrack, "/last/<int:user>")
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
