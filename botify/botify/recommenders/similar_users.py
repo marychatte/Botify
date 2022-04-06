@@ -7,7 +7,7 @@ from .toppop import TopPop
 
 
 class SimilarUsers(Recommender):
-    count_for_special_recommenders = 6
+    count_for_special_recommenders = 5
 
     def __init__(self,
                  tracks_redis,
@@ -52,7 +52,7 @@ class SimilarUsers(Recommender):
             return track
         else:
             unfavorites_tracks = self.catalog.from_bytes(unfavorites_tracks)
-            if track in unfavorites_tracks:
+            if track in unfavorites_tracks[:3]:
                 return self.special_recommendations(user, prev_track, prev_track_time)
             else:
                 return track
