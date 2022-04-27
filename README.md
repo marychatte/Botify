@@ -2,7 +2,8 @@
 
 ## Домашнее задание
 [Описание](slides/week03/homework.md)
-[Реализация](botify/HONEWORK.MD)
+
+[Реализация](botify/HOMEWORK.md)
 
 ## Лекции
 
@@ -51,7 +52,7 @@
 3) sticky_artist - треки исполнителя, с которым пришел пользователь
 4) contextual - рекомендует трек, похожий на предыдущий
 5) indexed - персонализированные рекомендации для пользователя
-6) similar_users - [доработанный и улучшенный Sticky Artist](botify/HONEWORK.MD)
+6) similar_users - [доработанный и улучшенный Sticky Artist](botify/HOMEWORK.md)
 
 
 
